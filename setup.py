@@ -21,7 +21,7 @@ setuptools.setup(
     install_requires=[
         "torch>=1.12.1",
         "torchvision>=0.13.1",
-        "opencv-python",
+        "opencv-python-headless",
         "numpy",
         "scipy",
         "matplotlib",
