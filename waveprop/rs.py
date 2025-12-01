@@ -917,7 +917,7 @@ def _bandpass(H, fX, fY, Sx, Sy, x0, y0, z0, wv):
     u_limit_p = ((x0 + 1 / (2 * du) + TOL) ** (-2) * z0**2 + 1) ** (-1 / 2) / wv
     u_limit_n = ((x0 - 1 / (2 * du) + TOL) ** (-2) * z0**2 + 1) ** (-1 / 2) / wv
     
-    if np.abs(Sx - x0) <= dx:
+    if (np.abs(Sx - x0) <= dx) or (Sx < x0):
         u0 = (u_limit_p + u_limit_n) / 2
         u_width = u_limit_p - u_limit_n
     elif x0 <= -Sx:
@@ -930,7 +930,8 @@ def _bandpass(H, fX, fY, Sx, Sy, x0, y0, z0, wv):
     dv = 1 / (Sy)
     v_limit_p = ((y0 + 1 / (2 * dv) + TOL) ** (-2) * z0**2 + 1) ** (-1 / 2) / wv
     v_limit_n = ((y0 - 1 / (2 * dv) + TOL) ** (-2) * z0**2 + 1) ** (-1 / 2) / wv
-    if np.abs(Sy - y0) <= dy:
+    
+    if (np.abs(Sy - y0) <= dy) or (Sy < y0):
         v0 = (v_limit_p + v_limit_n) / 2
         v_width = v_limit_p - v_limit_n
     elif y0 <= -Sy:
@@ -949,6 +950,7 @@ def _bandpass(H, fX, fY, Sx, Sy, x0, y0, z0, wv):
         ).to(H.device)
     else:
         H_filter = (np.abs(fX - u0) <= fx_max) * (np.abs(fY - v0) < fy_max)
+
     return H * H_filter
 
 #################################################
