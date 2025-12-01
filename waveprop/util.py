@@ -116,7 +116,7 @@ def sample_points(N, delta, shift=0, pytorch=False):
         x = x[np.newaxis, :]
         y = y[:, np.newaxis]
     return x, y
-sample_points(10,1)
+
 def sample_freq(N, delta, pytorch=False):
     """
     Return frequency sampling.
