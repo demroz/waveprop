@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 from scipy.special import fresnel
-from waveprop.util import sample_points, ft2, ift2, _get_dtypes, zero_pad, crop
+from waveprop.util import sample_points, sample_freq, ft2, ift2, _get_dtypes, zero_pad, crop
 
 
 def fresnel_one_step(u_in, wv, d1, dz):
@@ -32,9 +32,16 @@ def fresnel_one_step(u_in, wv, d1, dz):
 
     # coordinates
     x1, y1 = sample_points(N=[Ny, Nx], delta=d1)
+<<<<<<< HEAD
     xx1, yy1 = np.meshgrid(x1,y1)
     x2, y2 = sample_points(N=[Ny, Nx], delta=[1 / Ny / d1[0] * wv * dz, 1 / Nx / d1[1] * wv * dz])
     xx2, yy2 = np.meshgrid(x2,y2)
+=======
+
+    x2, y2 = sample_points(N=[Ny, Nx], delta=[1 / Ny / d1[0] * wv * dz, 1 / Nx / d1[1] * wv * dz])
+
+
+>>>>>>> 3101074e476cd36e954767de92003fa85c7de50f
     # evaluate integral
     u_out = (
         np.exp(1j * k * dz)
@@ -148,6 +155,7 @@ def fresnel_conv(u_in, wv, d1, dz, device=None, dtype=None, d2=None, pad=True):
 
     # source coordinates
     x1, y1 = sample_points(N=N, delta=d1)
+<<<<<<< HEAD
     xx1, yy1 = np.meshgrid(x1,y1)
     r1sq = xx1**2 + yy1**2
 
@@ -160,14 +168,28 @@ def fresnel_conv(u_in, wv, d1, dz, device=None, dtype=None, d2=None, pad=True):
     df1[1] = fY[1] - fY[0]
     fXX,fYY = np.meshgrid(fX,fY)
     fsq = fXX**2 + fYY**2
+=======
+
+
+    r1sq = x1**2 + y1**2
+
+    # source spatial frequencies
+    fX, fY, df1 = sample_freq(N, d1)
+    fsq = fX**2 + fY**2
+>>>>>>> 3101074e476cd36e954767de92003fa85c7de50f
 
     # scaling parameter
     m = d2 / d1
 
     # observation plane
     x2, y2 = sample_points(N=N, delta=d2)
+<<<<<<< HEAD
     xx2, yy2 = np.meshgrid(x2,y2)
     r2sq = xx2**2 + yy2**2
+=======
+
+    r2sq = x2**2 + y2**2
+>>>>>>> 3101074e476cd36e954767de92003fa85c7de50f
 
     # quadratic phase factors
     Q2 = np.exp(-1j * np.pi**2 * 2 * dz / m / k * fsq).astype(ctype_np)
@@ -188,8 +210,13 @@ def fresnel_conv(u_in, wv, d1, dz, device=None, dtype=None, d2=None, pad=True):
 
     if pad:
         u_out = crop(u_out, shape=N_orig, topleft=(int(N_orig[0] // 2), int(N_orig[1] // 2)))
+<<<<<<< HEAD
         x2 = crop(xx2, shape=N_orig, topleft=(int(N_orig[0] // 2), int(N_orig[1] // 2)))[0,:]
         y2 = crop(yy2, shape=N_orig, topleft=(int(N_orig[0] // 2), int(N_orig[1] // 2)))[:,0]
+=======
+        x2 = x2[:, int(N_orig[0] // 2): int(N_orig[0] // 2) + N_orig[0]]
+        y2 = y2[int(N_orig[1] // 2): int(N_orig[1] // 2) + N_orig[1], :]
+>>>>>>> 3101074e476cd36e954767de92003fa85c7de50f
     return u_out, x2, y2
 
 

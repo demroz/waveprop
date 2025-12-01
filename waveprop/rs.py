@@ -910,6 +910,7 @@ def _bandpass(H, fX, fY, Sx, Sy, x0, y0, z0, wv):
     :param y0:
     :return:
     """
+<<<<<<< HEAD
     dx, dy = Sx / H.shape[0], Sy / H.shape[1]
     TOL = 1e-10
     print(Sx,Sy, x0, y0)
@@ -918,6 +919,12 @@ def _bandpass(H, fX, fY, Sx, Sy, x0, y0, z0, wv):
     u_limit_n = ((x0 - 1 / (2 * du) + TOL) ** (-2) * z0**2 + 1) ** (-1 / 2) / wv
     
     if np.abs(Sx - x0) <= dx:
+=======
+    du = 1 / (Sx)
+    u_limit_p = ((x0 + 1 / (2 * du)) ** (-2) * z0**2 + 1) ** (-1 / 2) / wv
+    u_limit_n = ((x0 - 1 / (2 * du)) ** (-2) * z0**2 + 1) ** (-1 / 2) / wv
+    if Sx < x0:
+>>>>>>> 3101074e476cd36e954767de92003fa85c7de50f
         u0 = (u_limit_p + u_limit_n) / 2
         u_width = u_limit_p - u_limit_n
     elif x0 <= -Sx:
@@ -928,9 +935,15 @@ def _bandpass(H, fX, fY, Sx, Sy, x0, y0, z0, wv):
         u_width = u_limit_p + u_limit_n
 
     dv = 1 / (Sy)
+<<<<<<< HEAD
     v_limit_p = ((y0 + 1 / (2 * dv) + TOL) ** (-2) * z0**2 + 1) ** (-1 / 2) / wv
     v_limit_n = ((y0 - 1 / (2 * dv) + TOL) ** (-2) * z0**2 + 1) ** (-1 / 2) / wv
     if np.abs(Sy - y0) <= dy:
+=======
+    v_limit_p = ((y0 + 1 / (2 * dv)) ** (-2) * z0**2 + 1) ** (-1 / 2) / wv
+    v_limit_n = ((y0 - 1 / (2 * dv)) ** (-2) * z0**2 + 1) ** (-1 / 2) / wv
+    if Sy < y0:
+>>>>>>> 3101074e476cd36e954767de92003fa85c7de50f
         v0 = (v_limit_p + v_limit_n) / 2
         v_width = v_limit_p - v_limit_n
     elif y0 <= -Sy:
